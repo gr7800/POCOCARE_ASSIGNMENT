@@ -6,7 +6,7 @@ const { Signup, login, getrefToken } = require('./user.controller')
 app.post('/signup', Signup)
 
 // Login Route
-app.post('/login', login)
+app.post('login', login)
 
 
 // Get Fresh Token from refesh token Route
