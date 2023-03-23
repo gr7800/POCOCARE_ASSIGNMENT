@@ -43,10 +43,10 @@ exports.login = async (req, res) => {
                         _id: user._id,
                         email: user.email
                     },
-                    SECRET_KEY,
+                    "guddu123",
                     { expiresIn: "1h" }
                 );
-                const reftoken = jwt.sign({ _id: user._id, }, SECRET_KEY, { expiresIn: "7d" })
+                const reftoken = jwt.sign({ _id: user._id, }, "guddu123", { expiresIn: "7d" })
                 return res.status(200).send({ token, reftoken, user, message: "Login Successfully" });
             }
         }
@@ -60,12 +60,12 @@ exports.getrefToken = async (req, res) => {
     const ref_token = req.headers?.authorization?.split(' ')[1];
     try {
         if (ref_token) {
-            jwt.verify(ref_token, SECRET_KEY, (err, decoded) => {
+            jwt.verify(ref_token, "guddu123", (err, decoded) => {
                 if (err) {
                     return res.status(401).send("Please Login Again");
                 } else {
                     const { id } = decoded;
-                    const newToken = jwt.sign(({ id }, SECRET_KEY, { expiresIn: "7d" }))
+                    const newToken = jwt.sign(({ id }, "guddu123", { expiresIn: "7d" }))
                     return res.status(200).send({ newToken, message: "Login Successfully" });
                 }
             })
