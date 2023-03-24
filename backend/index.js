@@ -1,11 +1,22 @@
+// Load environment variables from .env file
 require("dotenv").config();
+
+// Import required packages
 const express = require('express');
 const connectDB = require('./src/utilsConfig/db');
-const PORT = process.env.PORT || 8080;
 const cors = require('cors');
+
+// Set port number
+const PORT = process.env.PORT || 8080;
+
+// Create an instance of express
 const app = express();
+
+// Import routes
 const UserRoutes = require('./src/Operations/UserAuth/User.route');
 const ProductRoutes = require('./src/Operations/Product/Product.route');
+
+// Import middleware for protecting routes
 const AuthenticationMedilware = require('./src/Middleware/Authentication.Middleware');
 
 // Enable CORS for all origins
@@ -26,10 +37,11 @@ async function startServer() {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
       console.log(`Server started on http://localhost:${PORT}`);
-    });
+});
   } catch (error) {
     console.log(error);
   }
 }
 
+// Start the server
 startServer();

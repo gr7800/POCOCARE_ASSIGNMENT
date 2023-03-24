@@ -1,18 +1,16 @@
+// This is an Express router that defines the endpoints for User related routes.
 const express = require("express");
 const router = express.Router();
 const { SignupController, LoginController, TokenRefrssController } = require('./User.controller')
 
-// SignUp Route
+// Route for User Signup
 router.post('/signup', SignupController)
 
-// Login Route
+// Route for User Login
 router.post('/login', LoginController)
 
-
-// Get Fresh Token from refesh token Route
+// Route to get a fresh token from a refresh token
 router.get('/token', TokenRefrssController)
 
-
+// Export the router to use in the main app.js file
 module.exports = router;
-
-
