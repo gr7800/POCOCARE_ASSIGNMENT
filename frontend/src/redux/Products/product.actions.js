@@ -4,17 +4,15 @@ import {
   GET_PRODUCT_LOADING,
   GET_PRODUCT_SUCCESS,
   GET_PRODUCT_ERROR,
-  REFRESH_TOKEN_LOADING,
-  REFRESH_TOKEN_SUCCESS,
   GET_SINGLE,
 } from './product.type';
-let API = 'https://pococareauthentication.onrender.com';
+let url = 'https://pococareauthentication.onrender.com';
 export const getProducts = () => async (state, dispatch) => {
   dispatch({ type: GET_PRODUCT_LOADING });
   try {
     console.log(localStorage.getItem('token'));
 
-    const getAll = await axios.get(`${API}/product/getproduct`, {
+    const getAll = await axios.get(`${url}/product/getproduct`, {
       headers: {
         authorization: localStorage.getItem('token'),
       },

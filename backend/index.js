@@ -1,12 +1,12 @@
 require("dotenv").config();
 const express = require('express');
-const connectDB = require('./src/configs/db');
+const connectDB = require('./src/utilsConfig/db');
 const PORT = process.env.PORT || 8080;
 const cors = require('cors');
 const app = express();
-const userRouter = require('./src/features/Auth/user.route');
-const productRouter = require('./src/features/Product/product.route');
-const authMiddleware = require('./src/Middleware/auth.middleware');
+const UserRoutes = require('./src/Operations/UserAuth/User.route');
+const ProductRoutes = require('./src/Operations/Product/Product.route');
+const AuthenticationMedilware = require('./src/Middleware/Authentication.Middleware');
 
 // Enable CORS for all origins
 app.use(cors());
@@ -15,9 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/user', userRouter);
-app.use(authMiddleware); // Middleware for protecting routes
-app.use('/product', productRouter);
+app.use('/user', UserRoutes);
+app.use(AuthenticationMedilware); // Middleware for protecting routes
+app.use('/product', ProductRoutes);
 
 // Connect to database and start server
 async function startServer() {
