@@ -1,10 +1,10 @@
-const Product = require('./product.model')
+const ProductModel = require('./Product.model')
 
 // Basic Get Product Controller
-exports.getproduct = async (req, res) => {
+exports.fetchAllProduct = async (req, res) => {
 
     try {
-        let product = await Product.find()
+        let product = await ProductModel.find()
         return res.status(200).send(product);
 
     } catch (error) {

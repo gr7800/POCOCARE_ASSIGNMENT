@@ -1,19 +1,53 @@
-const User = require('./user.model');
+const UserModel = require('./User.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// Login controller
+exports.LoginController = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const userpersent = await UserModel.findOne({ email:req.body.email });
+        console.log(userpersent)
+        if (!userpersent) {
+            return res.status(401).send({ message: 'Incorrect email or password' });
+        }
+        const isPasswordCorrect = await bcrypt.compare(password, userpersent.password);
+        if (!isPasswordCorrect) {
+            return res.status(401).send({ message: 'Incorrect email or password' });
+        }
+        const token = jwt.sign(
+            {
+                _id: userpersent._id,
+                email: userpersent.email,
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+        const refreshToken = jwt.sign(
+            {
+                _id: userpersent._id,
+            },
+            process.env.JWT_REFRESH_SECRET,
+            { expiresIn: '7d' }
+        );
+        return res.status(200).send({ token, refreshToken, userpersent, message: 'Login successful' });
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+};
+
 // Signup controller
-exports.signup = async (req, res) => {
+exports.SignupController = async (req, res) => {
     const {name, email, password } = req.body;
     try {
-        const user = await User.findOne({ email });
-        if (user) {
+        const exsistinguser = await UserModel.findOne({ email });
+        if (exsistinguser) {
             return res.status(409).send({
                 message: 'User already exists',
             });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({
+        const newUser = await UserModel.create({
             name:name,
             email:email,
             password: hashedPassword,
@@ -27,42 +61,10 @@ exports.signup = async (req, res) => {
     }
 };
 
-// Login controller
-exports.login = async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const user = await User.findOne({ email:req.body.email });
-        console.log(user)
-        if (!user) {
-            return res.status(401).send({ message: 'Incorrect email or password' });
-        }
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (!isPasswordCorrect) {
-            return res.status(401).send({ message: 'Incorrect email or password' });
-        }
-        const token = jwt.sign(
-            {
-                _id: user._id,
-                email: user.email,
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-        const refreshToken = jwt.sign(
-            {
-                _id: user._id,
-            },
-            process.env.JWT_REFRESH_SECRET,
-            { expiresIn: '7d' }
-        );
-        return res.status(200).send({ token, refreshToken, user, message: 'Login successful' });
-    } catch (error) {
-        return res.status(500).send(error.message);
-    }
-};
+
 
 // Refresh token controller
-exports.refreshToken = async (req, res) => {
+exports.TokenRefrssController = async (req, res) => {
     const refreshToken = req.headers.authorization
     // console.log(refreshToken);
     try {
