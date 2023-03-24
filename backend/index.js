@@ -1,33 +1,35 @@
 require("dotenv").config();
 const express = require('express');
-const connect = require('./src/configs/db');
+const connectDB = require('./src/configs/db');
 const PORT = process.env.PORT || 8080;
-const cors = require('cors')
+const cors = require('cors');
 const app = express();
-const userrouter = require('./src/features/Auth/user.route')
-const productrouter = require('./src/features/Product/product.route')
-const auth = require('./src/Middleware/auth.middleware')
+const userRouter = require('./src/features/Auth/user.route');
+const productRouter = require('./src/features/Product/product.route');
+const authMiddleware = require('./src/Middleware/auth.middleware');
 
-app.use(cors({ origin: "*" }));
+// Enable CORS for all origins
+app.use(cors());
 
-app.use(express.json())
+// Parse JSON request bodies
+app.use(express.json());
 
-// user authentication 
-app.use('/user', userrouter)
+// Routes
+app.use('/user', userRouter);
+app.use(authMiddleware); // Middleware for protecting routes
+app.use('/product', productRouter);
 
-// Authentication 
-app.use(auth)
-// protected route Just for Example
-app.use('/product', productrouter)
+// Connect to database and start server
+async function startServer() {
+  try {
+    await connectDB();
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log(`Server started on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-
-// connection to the database
-app.listen(PORT, async (req, res) => {
-    try {
-        await connect();
-        console.log("Connected to mongodb")
-    } catch (error) {
-        console.log(error);
-    }
-    console.log(`http://localhost:${PORT}`);
-});
+startServer();

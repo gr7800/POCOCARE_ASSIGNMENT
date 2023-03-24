@@ -1,18 +1,18 @@
 const express = require("express");
-const app = express.Router();
-const { Signup, login, getrefToken } = require('./user.controller')
+const router = express.Router();
+const { signup, login, refreshToken } = require('./user.controller')
 
 // SignUp Route
-app.post('/signup', Signup)
+router.post('/signup', signup)
 
 // Login Route
-app.post('/login', login)
+router.post('/login', login)
 
 
 // Get Fresh Token from refesh token Route
-app.get('/getfreshtoken', getrefToken)
+router.get('/token', refreshToken)
 
 
-module.exports = app;
+module.exports = router;
 
 
