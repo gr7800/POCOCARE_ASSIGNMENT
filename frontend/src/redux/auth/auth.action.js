@@ -12,7 +12,7 @@ let API = 'https://pococareauthentication.onrender.com';
 
 export const registerUser = (creds) => async (dispatch) => {
   try {
-    const res = await axios.post(`${API}/auth/signup`, creds);
+    const res = await axios.post(`${API}/user/signup`, creds);
     const data = await res.data;
     console.log(data);
     dispatch({ type: AUTH_REGISTER_SUCCESS, payload: data });
@@ -24,7 +24,7 @@ export const registerUser = (creds) => async (dispatch) => {
 
 export const loginUser = (creds) => async (dispatch) => {
   try {
-    const res = await axios.post(`${API}/auth/login`, creds);
+    const res = await axios.post(`${API}/user/login`, creds);
     const data = await res.data;
     console.log(data);
 
@@ -40,7 +40,7 @@ export const loginUser = (creds) => async (dispatch) => {
 export const refreshToken = () => async (state, dispatch) => {
   try {
     dispatch({ type: REFRESH_TOKEN_LOADING });
-    const refresh_Token = await axios.get(`${API}/auth/refreshToken`, {
+    const refresh_Token = await axios.get(`${API}/user/token`, {
       headers: {
         authorization: localStorage.getItem('refreshToken'),
       },

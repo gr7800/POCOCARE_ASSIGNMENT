@@ -19,14 +19,12 @@ import { getProducts } from '../redux/Products/product.actions';
 import { refreshToken } from '../redux/auth/auth.action';
 import { Link } from 'react-router-dom';
 const Home = () => {
-  const bg = useColorModeValue('white', 'gray.800');
+  const bg = useColorModeValue('pink', 'gray.800');
   const mobileNav = useDisclosure();
   const dispatch = useDispatch();
   const state = useSelector((state) => state.product);
   console.log(localStorage.getItem('errorToken'), state);
-  // if (localStorage.getItem('errorToken') == 'true') {
-  //   dispatch(refreshToken());
-  // }
+  
   useEffect(() => {
     dispatch(getProducts()).then((res) => {
       dispatch(refreshToken()).then((res) => dispatch(getProducts()));

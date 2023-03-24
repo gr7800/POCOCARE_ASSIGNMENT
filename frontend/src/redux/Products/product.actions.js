@@ -8,13 +8,13 @@ import {
   REFRESH_TOKEN_SUCCESS,
   GET_SINGLE,
 } from './product.type';
-let API = 'http://localhost:8080';
+let API = 'https://pococareauthentication.onrender.com';
 export const getProducts = () => async (state, dispatch) => {
   dispatch({ type: GET_PRODUCT_LOADING });
   try {
     console.log(localStorage.getItem('token'));
 
-    const getAll = await axios.get(`${API}/product`, {
+    const getAll = await axios.get(`${API}/product/getproduct`, {
       headers: {
         authorization: localStorage.getItem('token'),
       },
@@ -26,6 +26,7 @@ export const getProducts = () => async (state, dispatch) => {
     return dispatch({ type: GET_PRODUCT_ERROR });
   }
 };
+
 export const getSingleProduct = (id) => async (state, dispatch) => {
   dispatch({ type: GET_PRODUCT_LOADING });
   try {

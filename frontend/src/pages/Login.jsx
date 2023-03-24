@@ -38,6 +38,7 @@ const Login = () => {
   }
   return (
     <Container
+      bg={"pink"}
       maxW="lg"
       py={{ base: '12', md: '24' }}
       px={{ base: '0', sm: '8' }}
@@ -57,9 +58,10 @@ const Login = () => {
           </Stack>
         </Stack>
         <Box
+         
           py={{ base: '0', sm: '8' }}
           px={{ base: '4', sm: '10' }}
-          bg={{ base: 'transparent', sm: 'bg-surface' }}
+          bg={{ base: 'aqua', sm: 'bg-surface' }}
           boxShadow={{ base: 'none', sm: 'md' }}
           borderRadius={{ base: 'none', sm: 'xl' }}
         >
